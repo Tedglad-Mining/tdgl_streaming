@@ -53,6 +53,23 @@ class SyncConflictDetected(Exception):
 	pass
 
 
+def _pop_workflow_state(cleaned, dt):
+	"""Pop workflow state from cleaned data to bypass validate_workflow on insert/save."""
+	from frappe.model.workflow import get_workflow_name, get_workflow_state_field
+	wf_name = get_workflow_name(dt)
+	if not wf_name:
+		return None, None
+	field = get_workflow_state_field(wf_name)
+	value = cleaned.pop(field, None) if field else None
+	return field, value
+
+
+def _restore_workflow_state(doc, field, value):
+	"""Restore workflow state via db_set after insert/save."""
+	if field and value:
+		doc.db_set(field, value, update_modified=False)
+
+
 # ============================================================
 # PRIMARY SIDE — Change logging
 # ============================================================
@@ -424,6 +441,7 @@ def _apply_create(change, source):
 
 	cleaned = _clean_snapshot(data)
 	amended_from = cleaned.pop("amended_from", None)
+	wf_field, wf_value = _pop_workflow_state(cleaned, dt)
 
 	doc = frappe.get_doc(cleaned)
 	doc.flags.ignore_links = True
@@ -435,6 +453,7 @@ def _apply_create(change, source):
 
 	if amended_from:
 		doc.db_set("amended_from", amended_from, update_modified=False)
+	_restore_workflow_state(doc, wf_field, wf_value)
 
 	_restore_attribution(doc, data)
 	_sync_attachments(doc, source)
@@ -463,6 +482,7 @@ def _apply_update(change, source):
 		return  # Doc unchanged since last sync, skip
 
 	cleaned = _clean_snapshot(data)
+	wf_field, wf_value = _pop_workflow_state(cleaned, dt)
 	doc.update(cleaned)
 	doc.flags.ignore_links = True
 	doc.flags.ignore_validate = True
@@ -471,6 +491,7 @@ def _apply_update(change, source):
 	doc.flags.ignore_validate_update_after_submit = True
 	doc.flags.ignore_version = True
 	doc.save()
+	_restore_workflow_state(doc, wf_field, wf_value)
 
 	_restore_attribution(doc, data)
 	_sync_attachments(doc, source)
@@ -496,6 +517,7 @@ def _apply_submit(change, source):
 		# Draft -> Submit
 		cleaned = _clean_snapshot(data)
 		cleaned.pop("docstatus", None)
+		wf_field, wf_value = _pop_workflow_state(cleaned, dt)
 		doc.update(cleaned)
 		doc.flags.ignore_links = True
 		doc.flags.ignore_validate = True
@@ -504,6 +526,7 @@ def _apply_submit(change, source):
 		doc.flags.ignore_validate_update_after_submit = True
 		doc.flags.ignore_version = True
 		doc.submit()
+		_restore_workflow_state(doc, wf_field, wf_value)
 		_restore_attribution(doc, data)
 	elif doc.docstatus == 1:
 		# Already submitted, treat as update after submit
@@ -838,21 +861,28 @@ def resolve_conflict(conflict_name, resolution):
 					if frappe.db.exists(dt, dn):
 						doc = frappe.get_doc(dt, dn)
 						cleaned = _clean_snapshot(data)
+						wf_field, wf_value = _pop_workflow_state(cleaned, dt)
 						doc.update(cleaned)
 						doc.flags.ignore_links = True
 						doc.flags.ignore_validate = True
 						doc.flags.ignore_permissions = True
 						doc.flags.ignore_mandatory = True
 						doc.save()
+						_restore_workflow_state(doc, wf_field, wf_value)
 						_restore_attribution(doc, data)
 					else:
 						cleaned = _clean_snapshot(data)
+						amended_from = cleaned.pop("amended_from", None)
+						wf_field, wf_value = _pop_workflow_state(cleaned, dt)
 						doc = frappe.get_doc(cleaned)
 						doc.flags.ignore_links = True
 						doc.flags.ignore_validate = True
 						doc.flags.ignore_permissions = True
 						doc.flags.ignore_mandatory = True
 						doc.insert(set_name=dn, set_child_names=False)
+						if amended_from:
+							doc.db_set("amended_from", amended_from, update_modified=False)
+						_restore_workflow_state(doc, wf_field, wf_value)
 						_restore_attribution(doc, data)
 			finally:
 				frappe.flags.in_replica_sync = False
