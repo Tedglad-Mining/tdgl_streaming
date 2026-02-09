@@ -36,8 +36,10 @@
   },
   {
    "fieldname": "status",
-   "fieldtype": "Data",
-   "label": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "\nSynced\nFailed\nSkipped",
    "read_only": 1
   },
   {
@@ -87,13 +89,13 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "update_type",
-   "options": "\nCreate\nUpdate\nSubmit\nCancel\nDelete"
+   "options": "\nCreate\nUpdate\nSubmit\nCancel\nDelete\nRename\nUpdate After Submit"
   }
  ],
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 17:29:06.597915",
+ "modified": "2026-02-09 18:12:33.169191",
  "modified_by": "Administrator",
  "module": "TDGL Streaming",
  "name": "Sync Log",

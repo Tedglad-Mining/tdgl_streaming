@@ -44,7 +44,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Update Type",
-   "options": "\nCreate\nUpdate\nSubmit\nCancel\nDelete",
+   "options": "\nCreate\nUpdate\nSubmit\nCancel\nDelete\nRename\nUpdate After Submit",
    "read_only": 1,
    "reqd": 1
   },
@@ -84,7 +84,7 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 17:28:51.140993",
+ "modified": "2026-02-09 18:10:13.734057",
  "modified_by": "Administrator",
  "module": "TDGL Streaming",
  "name": "Sync Change Log",

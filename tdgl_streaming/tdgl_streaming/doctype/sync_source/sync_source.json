@@ -14,6 +14,7 @@
   "primary_url",
   "column_break_xwric",
   "last_pulled",
+  "last_pulled_name",
   "column_break_ae6tk",
   "pull_batch_size",
   "credentials_section",
@@ -103,11 +104,17 @@
    "fieldname": "credentials_section",
    "fieldtype": "Section Break",
    "label": "Credentials"
+  },
+  {
+   "fieldname": "last_pulled_name",
+   "fieldtype": "Data",
+   "label": "Last Pulled Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 16:46:31.311650",
+ "modified": "2026-02-09 18:15:08.659629",
  "modified_by": "Administrator",
  "module": "TDGL Streaming",
  "name": "Sync Source",

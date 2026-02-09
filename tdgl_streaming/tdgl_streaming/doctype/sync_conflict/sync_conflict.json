@@ -81,8 +81,7 @@
    "fieldname": "resolution",
    "fieldtype": "Select",
    "label": "resolution",
-   "options": "\nAccept Primary\nKeep Local",
-   "read_only": 1
+   "options": "\nAccept Primary\nKeep Local"
   },
   {
    "fieldname": "column_break_d0lyx",
@@ -108,7 +107,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 17:29:25.320207",
+ "modified": "2026-02-09 18:13:50.957750",
  "modified_by": "Administrator",
  "module": "TDGL Streaming",
  "name": "Sync Conflict",
