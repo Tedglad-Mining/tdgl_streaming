@@ -454,6 +454,9 @@ def _apply_update(change, source):
 		return
 
 	doc = frappe.get_doc(dt, dn)
+	if doc.docstatus == 2:
+		return  # Can't update cancelled docs, skip silently
+
 	cleaned = _clean_snapshot(data)
 	doc.update(cleaned)
 	doc.flags.ignore_links = True
