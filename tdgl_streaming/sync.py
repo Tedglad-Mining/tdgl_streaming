@@ -460,6 +460,7 @@ def _apply_update(change, source):
 	doc.flags.ignore_validate = True
 	doc.flags.ignore_permissions = True
 	doc.flags.ignore_mandatory = True
+	doc.flags.ignore_validate_update_after_submit = True
 	doc.save()
 
 	_restore_attribution(doc, data)
@@ -491,6 +492,7 @@ def _apply_submit(change, source):
 		doc.flags.ignore_validate = True
 		doc.flags.ignore_permissions = True
 		doc.flags.ignore_mandatory = True
+		doc.flags.ignore_validate_update_after_submit = True
 		doc.submit()
 		_restore_attribution(doc, data)
 	elif doc.docstatus == 1:
