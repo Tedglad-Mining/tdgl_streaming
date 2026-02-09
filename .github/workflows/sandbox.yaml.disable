@@ -1,0 +1,34 @@
+name: Deploy to TDGL Sandbox
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      HOST: ${{ secrets.HOST }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      PORT: ${{ secrets.PORT }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Latest Build
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.KEY }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          command_timeout: 15m
+          # hrms.payroll.doctype.payroll_entry.payroll_entry
+          # script: |
+          #   cd $HOME/edge-sandbox && cd apps/tedglad_edge_extensions && git pull && $HOME/edge-sandbox/env/bin/python3 -m pip install -r requirements.txt && bench migrate && bench clear-cache && bench restart
+          script: |
+            cd $HOME/edge-sandbox && cd apps/tedglad_edge_extensions && git add -A && git stash push -m "Auto stash" > /dev/null 2>&1 || true && git pull && git stash pop > /dev/null 2>&1 || true && cp tedglad_edge_extensions/payroll_entry_fix.py ../hrms/hrms/payroll/doctype/payroll_entry/payroll_entry.py && cp tedglad_edge_extensions/hrms_fix_override.py ../hrms/hrms/hooks.py && $HOME/edge-sandbox/env/bin/python3 -m pip install -r requirements.txt && bench migrate && bench clear-cache && bench restart
