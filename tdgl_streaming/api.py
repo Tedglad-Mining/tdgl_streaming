@@ -69,6 +69,7 @@ def notify():
 			queue="default",
 			job_name=f"sync_pull_{source_name}",
 			enqueue_after_commit=True,
+			timeout=1500,
 		)
 
 	return {"status": "ok", "sources_queued": len(sources)}

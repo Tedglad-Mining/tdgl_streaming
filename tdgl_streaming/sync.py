@@ -248,6 +248,7 @@ def scheduled_pull():
 			queue="default",
 			job_name=f"sync_pull_{source_name}",
 			enqueue_after_commit=True,
+			timeout=1500,
 		)
 
 
@@ -875,6 +876,7 @@ def pull_now(sync_source_name):
 		queue="default",
 		job_name=f"sync_pull_{sync_source_name}",
 		enqueue_after_commit=True,
+		timeout=1500,
 	)
 	return {"message": "Pull enqueued"}
 
@@ -894,6 +896,7 @@ def reset_and_pull(sync_source_name):
 		queue="default",
 		job_name=f"sync_pull_{sync_source_name}",
 		enqueue_after_commit=True,
+		timeout=1500,
 	)
 	return {"message": "Cursor reset, full re-sync enqueued"}
 
