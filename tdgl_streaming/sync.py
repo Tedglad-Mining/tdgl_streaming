@@ -45,7 +45,7 @@ STRIP_FIELDS = {
 	"__islocal", "__unsaved", "__run_link_triggers",
 }
 
-STRIP_CHILD_FIELDS = {"name", "parent", "parentfield", "parenttype", "creation", "modified", "modified_by", "owner"}
+STRIP_CHILD_FIELDS = {"parent", "parentfield", "parenttype", "creation", "modified", "modified_by", "owner"}
 
 
 class SyncConflictDetected(Exception):
@@ -430,7 +430,7 @@ def _apply_create(change, source):
 	doc.flags.ignore_permissions = True
 	doc.flags.ignore_mandatory = True
 	doc.flags.ignore_version = True
-	doc.insert(set_name=dn)
+	doc.insert(set_name=dn, set_child_names=False)
 
 	if amended_from:
 		doc.db_set("amended_from", amended_from, update_modified=False)
@@ -851,7 +851,7 @@ def resolve_conflict(conflict_name, resolution):
 						doc.flags.ignore_validate = True
 						doc.flags.ignore_permissions = True
 						doc.flags.ignore_mandatory = True
-						doc.insert(set_name=dn)
+						doc.insert(set_name=dn, set_child_names=False)
 						_restore_attribution(doc, data)
 			finally:
 				frappe.flags.in_replica_sync = False
