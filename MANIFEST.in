@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include tdgl_streaming *.css
+recursive-include tdgl_streaming *.csv
+recursive-include tdgl_streaming *.html
+recursive-include tdgl_streaming *.ico
+recursive-include tdgl_streaming *.js
+recursive-include tdgl_streaming *.json
+recursive-include tdgl_streaming *.md
+recursive-include tdgl_streaming *.png
+recursive-include tdgl_streaming *.py
+recursive-include tdgl_streaming *.svg
+recursive-include tdgl_streaming *.txt
+recursive-exclude tdgl_streaming *.pyc
