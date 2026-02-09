@@ -458,6 +458,9 @@ def _apply_update(change, source):
 	if doc.docstatus == 2:
 		return  # Can't update cancelled docs, skip silently
 
+	if data.get("modified") == str(doc.modified):
+		return  # Doc unchanged since last sync, skip
+
 	cleaned = _clean_snapshot(data)
 	doc.update(cleaned)
 	doc.flags.ignore_links = True
@@ -861,3 +864,94 @@ def resolve_conflict(conflict_name, resolution):
 	conflict.flags.ignore_permissions = True
 	conflict.save()
 	frappe.db.commit()
+
+
+@frappe.whitelist()
+def pull_now(sync_source_name):
+	"""Trigger an immediate pull for a Sync Source."""
+	frappe.enqueue(
+		"tdgl_streaming.sync.pull_changes",
+		sync_source_name=sync_source_name,
+		queue="default",
+		job_name=f"sync_pull_{sync_source_name}",
+		enqueue_after_commit=True,
+	)
+	return {"message": "Pull enqueued"}
+
+
+@frappe.whitelist()
+def reset_and_pull(sync_source_name):
+	"""Reset cursor, clear old logs, and trigger a full re-sync."""
+	source = frappe.get_doc("Sync Source", sync_source_name)
+	source.db_set("last_pulled", None)
+	source.db_set("last_pulled_name", "")
+	frappe.db.delete("Sync Log", {"sync_source": sync_source_name})
+	frappe.db.commit()
+
+	frappe.enqueue(
+		"tdgl_streaming.sync.pull_changes",
+		sync_source_name=sync_source_name,
+		queue="default",
+		job_name=f"sync_pull_{sync_source_name}",
+		enqueue_after_commit=True,
+	)
+	return {"message": "Cursor reset, full re-sync enqueued"}
+
+
+@frappe.whitelist()
+def retry_failed(sync_source_name):
+	"""Retry all failed Sync Log entries for a Sync Source."""
+	source = frappe.get_doc("Sync Source", sync_source_name)
+	failed_logs = frappe.get_all(
+		"Sync Log",
+		filters={"status": "Failed", "sync_source": sync_source_name},
+		fields=["name", "ref_doctype", "docname", "update_type", "data"],
+	)
+
+	succeeded = 0
+	failed = 0
+	for log in failed_logs:
+		change = {
+			"ref_doctype": log.ref_doctype,
+			"docname": log.docname,
+			"update_type": log.update_type,
+			"data": log.data,
+		}
+		try:
+			frappe.flags.in_replica_sync = True
+			update_type = change.get("update_type")
+
+			if update_type == "Create":
+				_apply_create(change, source)
+			elif update_type in ("Update", "Update After Submit"):
+				_apply_update(change, source)
+			elif update_type == "Submit":
+				_apply_submit(change, source)
+			elif update_type == "Cancel":
+				_apply_cancel(change, source)
+			elif update_type == "Delete":
+				_apply_delete(change, source)
+			elif update_type == "Rename":
+				_apply_rename(change, source)
+			else:
+				continue
+
+			frappe.db.set_value("Sync Log", log.name, {
+				"status": "Synced",
+				"error": "",
+			})
+			frappe.db.commit()
+			succeeded += 1
+
+		except Exception:
+			frappe.db.rollback()
+			frappe.db.set_value("Sync Log", log.name, {
+				"error": frappe.get_traceback(),
+			})
+			frappe.db.commit()
+			failed += 1
+
+		finally:
+			frappe.flags.in_replica_sync = False
+
+	return {"retried": len(failed_logs), "succeeded": succeeded, "failed": failed}
