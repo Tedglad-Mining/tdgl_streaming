@@ -429,6 +429,7 @@ def _apply_create(change, source):
 	doc.flags.ignore_validate = True
 	doc.flags.ignore_permissions = True
 	doc.flags.ignore_mandatory = True
+	doc.flags.ignore_version = True
 	doc.insert(set_name=dn)
 
 	if amended_from:
@@ -464,6 +465,7 @@ def _apply_update(change, source):
 	doc.flags.ignore_permissions = True
 	doc.flags.ignore_mandatory = True
 	doc.flags.ignore_validate_update_after_submit = True
+	doc.flags.ignore_version = True
 	doc.save()
 
 	_restore_attribution(doc, data)
@@ -496,6 +498,7 @@ def _apply_submit(change, source):
 		doc.flags.ignore_permissions = True
 		doc.flags.ignore_mandatory = True
 		doc.flags.ignore_validate_update_after_submit = True
+		doc.flags.ignore_version = True
 		doc.submit()
 		_restore_attribution(doc, data)
 	elif doc.docstatus == 1:
@@ -526,6 +529,7 @@ def _apply_cancel(change, source):
 	doc = frappe.get_doc(dt, dn)
 	doc.flags.ignore_links = True
 	doc.flags.ignore_permissions = True
+	doc.flags.ignore_version = True
 	doc.cancel()
 	frappe.db.commit()
 
