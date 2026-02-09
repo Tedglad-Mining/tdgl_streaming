@@ -77,10 +77,9 @@
   },
   {
    "fieldname": "docname",
-   "fieldtype": "Dynamic Link",
+   "fieldtype": "Data",
    "in_standard_filter": 1,
    "label": "docname",
-   "options": "ref_doctype",
    "read_only": 1
   },
   {
@@ -94,7 +93,7 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 16:51:41.636796",
+ "modified": "2026-02-09 17:29:06.597915",
  "modified_by": "Administrator",
  "module": "TDGL Streaming",
  "name": "Sync Log",

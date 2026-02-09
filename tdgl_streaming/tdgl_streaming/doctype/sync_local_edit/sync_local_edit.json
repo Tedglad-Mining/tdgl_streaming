@@ -29,18 +29,17 @@
   },
   {
    "fieldname": "docname",
-   "fieldtype": "Dynamic Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "docname",
-   "options": "ref_doctype",
    "read_only": 1
   }
  ],
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 16:59:07.474730",
+ "modified": "2026-02-09 17:29:40.945163",
  "modified_by": "Administrator",
  "module": "TDGL Streaming",
  "name": "Sync Local Edit",
