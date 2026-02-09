@@ -39,28 +39,86 @@ Doc saved/submitted/cancelled
 
 ### Setup
 
-#### On the Primary
+#### Step 1: Install on Both Sites
 
-1. Install the app: `bench --site primary.site install-app tdgl_streaming`
-2. Run `bench migrate`
-3. Go to **Sync Config** (single doc)
-4. Check **Enabled**
-5. Add rows to **Sync DocTypes** — pick each DocType to track, check Enabled
-6. (Optional) Set **Push URL** to the replica's URL and check **Push Enabled** for real-time notifications
+```bash
+# On primary
+bench --site primary.site install-app tdgl_streaming
+bench --site primary.site migrate
 
-#### On the Replica
+# On replica
+bench --site replica.site install-app tdgl_streaming
+bench --site replica.site migrate
+```
 
-1. Install the app: `bench --site replica.site install-app tdgl_streaming`
-2. Run `bench migrate`
-3. Create a **Sync Source** record:
-   - **Source Name**: human label (e.g. "HQ Primary")
+#### Step 2: Configure the Primary
+
+1. Open **Sync Config** (search bar → "Sync Config")
+2. Check **Enabled**
+3. Add rows to **Sync DocTypes** — pick each DocType you want to sync (e.g. Sales Invoice, Customer, Item), check **Enabled** on each row
+4. Save
+
+#### Step 3: Generate API Credentials (on Primary)
+
+The replica needs API credentials to authenticate against the primary.
+
+1. Go to the **User** list on the primary site
+2. Open a user with the **System Manager** role
+3. Scroll to the **API Access** section
+4. Click **Generate Keys**
+5. Copy the **API Key** and **API Secret** — the secret is shown only once, save it somewhere safe
+
+#### Step 4: Configure the Replica
+
+1. Make sure the scheduler is running:
+   ```bash
+   bench --site replica.site enable-scheduler
+   ```
+   The replica polls the primary every 60 seconds via a scheduled job. Without the scheduler, no pulling happens.
+
+2. Create a new **Sync Source** record:
+   - **Source Name**: a human label (e.g. "HQ Primary")
    - **Primary URL**: full URL of the primary site (e.g. `https://primary.example.com`)
-   - **API Key** + **API Secret**: create an API key on the primary for a System Manager user
-   - **Pull Batch Size**: 100 (default)
-4. Add rows to **Sync DocTypes** — pick DocTypes to pull, set filters if needed
-5. The first pull runs automatically — all existing docs for tracked DocTypes are pulled in bulk
+   - **API Key**: paste the key from Step 3
+   - **API Secret**: paste the secret from Step 3
+   - **Pull Batch Size**: `100` (default, increase for large initial syncs)
 
-**Important**: If you create documents locally on the replica in synced DocTypes, set a **distinct naming series prefix** on the replica to avoid name collisions with the primary (e.g. `SINV-R-` instead of `SINV-`).
+3. Add rows to **Sync DocTypes** — pick the same DocTypes you enabled on the primary
+   - Optionally set **Filters** (JSON) on each row to only pull a subset of docs, e.g.:
+     ```json
+     {"company": "My Company"}
+     ```
+
+4. Save — the first pull runs automatically within 60 seconds and does a **full initial sync** of all existing docs for the tracked DocTypes
+
+#### Step 5: Verify It's Working
+
+- **Primary**: open the **Sync Change Log** list — you should see entries appear each time a tracked doc is saved
+- **Replica**: open the **Sync Log** list — entries with status **Synced** mean docs were applied successfully, **Failed** means something went wrong (check the error field)
+- If nothing is appearing in Sync Log, check **Error Log** for scheduler or background job issues
+
+#### Step 6 (Optional): Enable Push Notifications
+
+By default the replica polls every 60 seconds. For near-real-time sync:
+
+1. On the **primary**, open **Sync Config**
+2. Set **Push URL** to the replica's full URL (e.g. `https://replica.example.com`)
+3. Check **Push Enabled**
+
+Now the primary sends a lightweight notification to the replica on each change, triggering an immediate pull instead of waiting for the next 60-second cycle.
+
+#### Naming Series
+
+If you create documents locally on the replica in synced DocTypes, set a **distinct naming series prefix** on the replica to avoid name collisions with the primary (e.g. `SINV-R-` instead of `SINV-`).
+
+#### Resolving Conflicts
+
+If a document is edited locally on the replica and the primary later sends an update for the same document, a **Sync Conflict** is created instead of overwriting the local changes. To resolve:
+
+1. Open the **Sync Conflict** list on the replica
+2. For each conflict, choose a resolution:
+   - **Accept Primary**: applies the primary's version, discards local changes
+   - **Keep Local**: keeps the replica's version, ignores the primary's update
 
 ### Change Tracking (Primary)
 

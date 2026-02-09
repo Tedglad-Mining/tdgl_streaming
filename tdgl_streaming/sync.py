@@ -110,10 +110,10 @@ def log_change(doc, method):
 	if not update_type:
 		return
 
-	# Dedup: on_update fires on insert (before after_insert) and on submit (before on_submit).
+	# Dedup: on_update fires during insert and submit.
 	# Skip on_update in those cases to avoid double-logging.
 	if method == "on_update":
-		if doc.get("__islocal"):
+		if doc.flags.get("in_insert"):
 			return  # after_insert will handle this
 		if getattr(doc, "_action", None) == "submit":
 			return  # on_submit will handle this
@@ -434,6 +434,7 @@ def _apply_create(change, source):
 	if amended_from:
 		doc.db_set("amended_from", amended_from, update_modified=False)
 
+	_restore_attribution(doc, data)
 	_sync_attachments(doc, source)
 	frappe.db.commit()
 
@@ -461,6 +462,7 @@ def _apply_update(change, source):
 	doc.flags.ignore_mandatory = True
 	doc.save()
 
+	_restore_attribution(doc, data)
 	_sync_attachments(doc, source)
 	frappe.db.commit()
 
@@ -490,9 +492,15 @@ def _apply_submit(change, source):
 		doc.flags.ignore_permissions = True
 		doc.flags.ignore_mandatory = True
 		doc.submit()
+		_restore_attribution(doc, data)
 	elif doc.docstatus == 1:
 		# Already submitted, treat as update after submit
 		_apply_update(change, source)
+		return
+	elif doc.docstatus == 2:
+		# Cancelled on replica
+		if _has_local_edit(dt, dn):
+			_create_conflict(change, source, "Submit")
 		return
 
 	frappe.db.commit()
@@ -685,6 +693,23 @@ def _apply_doc_snapshot(doc_data, source, update_type):
 	_apply_single_change(change, source)
 
 
+def _restore_attribution(doc, original_data):
+	"""Restore original user attribution after insert/save.
+
+	Frappe overwrites owner/creation/modified/modified_by with the background
+	job user (Administrator). This stamps the primary's original values back
+	via db_set, bypassing the ORM.
+	"""
+	fields = {}
+	for field in ("owner", "creation", "modified", "modified_by"):
+		val = original_data.get(field)
+		if val:
+			fields[field] = val
+
+	if fields:
+		doc.db_set(fields, update_modified=False)
+
+
 def _sync_attachments(doc, source):
 	"""Download and sync file attachments from primary.
 
@@ -791,6 +816,7 @@ def resolve_conflict(conflict_name, resolution):
 						doc.flags.ignore_links = True
 						doc.flags.ignore_permissions = True
 						doc.cancel()
+						_restore_attribution(doc, data)
 				elif conflict.conflict_type == "Delete":
 					if frappe.db.exists(dt, dn):
 						frappe.delete_doc(dt, dn, force=True, ignore_permissions=True)
@@ -805,6 +831,7 @@ def resolve_conflict(conflict_name, resolution):
 						doc.flags.ignore_permissions = True
 						doc.flags.ignore_mandatory = True
 						doc.save()
+						_restore_attribution(doc, data)
 					else:
 						cleaned = _clean_snapshot(data)
 						doc = frappe.get_doc(cleaned)
@@ -813,6 +840,7 @@ def resolve_conflict(conflict_name, resolution):
 						doc.flags.ignore_permissions = True
 						doc.flags.ignore_mandatory = True
 						doc.insert(set_name=dn)
+						_restore_attribution(doc, data)
 			finally:
 				frappe.flags.in_replica_sync = False
 

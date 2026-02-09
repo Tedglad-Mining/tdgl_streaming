@@ -70,7 +70,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "conflict_type",
-   "options": "Update\nCancel\nDelete",
+   "options": "Update\nSubmit\nCancel\nDelete",
    "read_only": 1
   },
   {

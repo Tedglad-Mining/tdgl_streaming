@@ -16,7 +16,10 @@ doc_events = {
 			"tdgl_streaming.sync.track_local_edit",
 		],
 		"on_submit": "tdgl_streaming.sync.log_change",
-		"on_cancel": "tdgl_streaming.sync.log_change",
+		"on_cancel": [
+			"tdgl_streaming.sync.log_change",
+			"tdgl_streaming.sync.track_local_edit",
+		],
 		"on_trash": "tdgl_streaming.sync.log_change",
 		"on_update_after_submit": "tdgl_streaming.sync.log_change",
 		"after_rename": "tdgl_streaming.sync.log_rename",
