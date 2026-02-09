@@ -1,0 +1,121 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2026-02-09 16:49:42.575760",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ref_doctype",
+  "docname",
+  "column_break_4hudr",
+  "status",
+  "update_type",
+  "column_break_bezep",
+  "sync_source",
+  "column_break_h9pd2",
+  "section_break_92yr9",
+  "data",
+  "column_break_w678g",
+  "error"
+ ],
+ "fields": [
+  {
+   "fieldname": "ref_doctype",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "ref_doctype",
+   "options": "DocType",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4hudr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_bezep",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sync_source",
+   "fieldtype": "Link",
+   "label": "sync_source",
+   "options": "Sync Source",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_h9pd2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_92yr9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "data",
+   "fieldtype": "Long Text",
+   "label": "data",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_w678g",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "error",
+   "fieldtype": "Long Text",
+   "label": "error",
+   "read_only": 1
+  },
+  {
+   "fieldname": "docname",
+   "fieldtype": "Dynamic Link",
+   "in_standard_filter": 1,
+   "label": "docname",
+   "options": "ref_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "update_type",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "update_type",
+   "options": "\nCreate\nUpdate\nSubmit\nCancel\nDelete"
+  }
+ ],
+ "in_create": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-09 16:51:41.636796",
+ "modified_by": "Administrator",
+ "module": "TDGL Streaming",
+ "name": "Sync Log",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "read_only": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

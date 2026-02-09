@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-09 16:28:45.838203",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "section_break_9taux",
+  "column_break_bxc3h",
+  "site_name",
+  "column_break_ljhzu",
+  "section_break_cfsog",
+  "push_enabled",
+  "push_url",
+  "column_break_wdpsf",
+  "column_break_ekeri",
+  "section_break_71d5h",
+  "sync_doctypes"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "section_break_9taux",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_bxc3h",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "site_name",
+   "fieldtype": "Data",
+   "label": "Site Name"
+  },
+  {
+   "fieldname": "column_break_ljhzu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "push_url",
+   "fieldtype": "Data",
+   "label": "Push URL"
+  },
+  {
+   "fieldname": "column_break_wdpsf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "push_enabled",
+   "fieldtype": "Check",
+   "label": "Push Enabled"
+  },
+  {
+   "fieldname": "column_break_ekeri",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_71d5h",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sync_doctypes",
+   "fieldtype": "Table",
+   "label": "Sync Doctypes",
+   "options": "Sync Config Doctypes"
+  },
+  {
+   "fieldname": "section_break_cfsog",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-02-09 16:37:34.474761",
+ "modified_by": "Administrator",
+ "module": "TDGL Streaming",
+ "name": "Sync Config",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

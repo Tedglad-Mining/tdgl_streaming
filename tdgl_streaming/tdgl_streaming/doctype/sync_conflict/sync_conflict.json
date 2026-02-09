@@ -1,0 +1,134 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-09 16:55:34.892526",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ref_doctype",
+  "column_break_3kocf",
+  "docname",
+  "column_break_lnrub",
+  "column_break_btkqy",
+  "section_break_8pwjo",
+  "conflict_type",
+  "resolved",
+  "column_break_a58g4",
+  "resolution",
+  "column_break_d0lyx",
+  "primary_data",
+  "column_break_iufez",
+  "sync_source"
+ ],
+ "fields": [
+  {
+   "fieldname": "ref_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "ref_doctype",
+   "options": "DocType",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3kocf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "docname",
+   "fieldtype": "Dynamic Link",
+   "in_standard_filter": 1,
+   "label": "docname",
+   "options": "ref_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_lnrub",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "resolved",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "resolved",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_btkqy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_8pwjo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "conflict_type",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "conflict_type",
+   "options": "Update\nCancel\nDelete",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_a58g4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "resolution",
+   "fieldtype": "Select",
+   "label": "resolution",
+   "options": "\nAccept Primary\nKeep Local",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_d0lyx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_data",
+   "fieldtype": "Long Text",
+   "label": "primary_data",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_iufez",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sync_source",
+   "fieldtype": "Link",
+   "label": "sync_source",
+   "options": "Sync Source",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-09 16:57:17.469449",
+ "modified_by": "Administrator",
+ "module": "TDGL Streaming",
+ "name": "Sync Conflict",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,112 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2026-02-09 16:34:09.561558",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ref_doctype",
+  "column_break_ie55a",
+  "docname",
+  "column_break_1obhs",
+  "update_type",
+  "column_break_mekm6",
+  "section_break_qx9po",
+  "source_site",
+  "column_break_naxei",
+  "data"
+ ],
+ "fields": [
+  {
+   "fieldname": "ref_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Ref DocType",
+   "options": "DocType",
+   "read_only": 1,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "docname",
+   "fieldtype": "Dynamic Link",
+   "in_standard_filter": 1,
+   "label": "Docname",
+   "options": "ref_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "update_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Update Type",
+   "options": "\nCreate\nUpdate\nSubmit\nCancel\nDelete",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "data",
+   "fieldtype": "JSON",
+   "label": "Data",
+   "read_only": 1
+  },
+  {
+   "fieldname": "source_site",
+   "fieldtype": "Data",
+   "label": "Source Site",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ie55a",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_1obhs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mekm6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_qx9po",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_naxei",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "in_create": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-09 16:35:48.654492",
+ "modified_by": "Administrator",
+ "module": "TDGL Streaming",
+ "name": "Sync Change Log",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "read_only": 1,
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": []
+}

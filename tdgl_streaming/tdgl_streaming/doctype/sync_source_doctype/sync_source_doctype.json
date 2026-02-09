@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-09 16:43:30.718984",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ref_doctype",
+  "column_break_wxrxz",
+  "enabled",
+  "column_break_8neef",
+  "column_break_6yvce",
+  "section_break_02yw8",
+  "filters"
+ ],
+ "fields": [
+  {
+   "fieldname": "ref_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Ref DocType",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_wxrxz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_8neef",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "section_break_02yw8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "filters",
+   "fieldtype": "JSON",
+   "label": "Filters"
+  },
+  {
+   "fieldname": "column_break_6yvce",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-02-09 16:43:52.170201",
+ "modified_by": "Administrator",
+ "module": "TDGL Streaming",
+ "name": "Sync Source DocType",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

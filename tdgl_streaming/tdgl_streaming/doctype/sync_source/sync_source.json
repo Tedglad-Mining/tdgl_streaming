@@ -1,0 +1,133 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{source_name}",
+ "creation": "2026-02-09 16:44:20.256849",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "source_name",
+  "enabled",
+  "column_break_qymix",
+  "primary_url",
+  "column_break_xwric",
+  "last_pulled",
+  "column_break_ae6tk",
+  "pull_batch_size",
+  "credentials_section",
+  "api_key",
+  "column_break_7nhrx",
+  "api_secret",
+  "column_break_z2ego",
+  "section_break_2rcdm",
+  "sync_doctypes"
+ ],
+ "fields": [
+  {
+   "fieldname": "source_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Source Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "primary_url",
+   "fieldtype": "Data",
+   "label": "Primary URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "API Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "api_secret",
+   "fieldtype": "Password",
+   "label": "API Secret",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "last_pulled",
+   "fieldtype": "Datetime",
+   "label": "Last Pulled",
+   "read_only": 1
+  },
+  {
+   "default": "100",
+   "fieldname": "pull_batch_size",
+   "fieldtype": "Int",
+   "label": "Pull Batch Size",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sync_doctypes",
+   "fieldtype": "Table",
+   "label": "Sync DocTypes",
+   "options": "Sync Source DocType"
+  },
+  {
+   "fieldname": "column_break_qymix",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_xwric",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_7nhrx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_z2ego",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_2rcdm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ae6tk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "credentials_section",
+   "fieldtype": "Section Break",
+   "label": "Credentials"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-09 16:46:31.311650",
+ "modified_by": "Administrator",
+ "module": "TDGL Streaming",
+ "name": "Sync Source",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
